@@ -4,6 +4,7 @@ trait Condition
 
 class Fact extends Condition {
   var ag : Agent = null
+  var value : Boolean = true
 }
 
 abstract class BeliefBase {

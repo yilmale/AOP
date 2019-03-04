@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/aop.iml" filepath="$PROJECT_DIR$/.idea/modules/aop.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/aop-build.iml" filepath="$PROJECT_DIR$/.idea/modules/aop-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AOP.iml" filepath="$PROJECT_DIR$/.idea/modules/AOP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AOP-build.iml" filepath="$PROJECT_DIR$/.idea/modules/AOP-build.iml" />
     </modules>
   </component>
 </project>

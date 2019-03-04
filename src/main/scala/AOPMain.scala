@@ -6,6 +6,7 @@ object AOPMain extends App  {
   case class Locked(d: String) extends Fact
   case class Acquired(r: String) extends Fact
 
+
   println("AOP main driver")
 
 
@@ -17,17 +18,15 @@ object AOPMain extends App  {
          Locked("D1"),
          Acquired("R1"),
          Acquired("R3")))
+    ) subjectTo (
+         "Rule1" -- Locked("D1") & Acquired("R1") |--> (Locked("D1"),not(Locked("D3"))),
+         "Rule2" -- Locked("D1") & Acquired("R2") |--> (Locked("D1"),Locked("D3"))
     )
-    {
-      var x : Int = 0
-      var y : Int = 0
-
-      "Rule1" -- Locked("D1") & Acquired("R1")       |--> {not(Locked("D1"));x = x + 1}
-      "Rule2" -- Acquired("R2")                      |--> {y = y + 10}
-   }
-
-  b.evaluateRules()
 
 
+  var rl = b.selectRule()
+  println(rl.name + " specificity " + rl.specificity)
+  rl.c foreach {cnd => println(cnd)}
+  rl.a foreach {act => println(act)}
 
 }
