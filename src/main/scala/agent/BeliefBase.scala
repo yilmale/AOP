@@ -2,7 +2,9 @@ package agent
 
 trait Condition
 
-class Fact extends Condition
+class Fact extends Condition {
+  var ag : Agent = null
+}
 
 abstract class BeliefBase {
   var facts: Set[Fact]

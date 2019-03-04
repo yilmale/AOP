@@ -12,20 +12,22 @@ object AOPMain extends App  {
   import RuleGenerator._
 
 
-  var b = Agent (
-      Facts(Set(Locked("D1"),
+  var b = ReflexAgent (
+      Facts(Set(
+         Locked("D1"),
          Acquired("R1"),
          Acquired("R3")))
     )
     {
-
       var x : Int = 0
       var y : Int = 0
 
-      "Rule1" -- Locked("D1") & Acquired("R1")       |--> {x = x + 1}
+      "Rule1" -- Locked("D1") & Acquired("R1")       |--> {not(Locked("D1"));x = x + 1}
       "Rule2" -- Acquired("R2")                      |--> {y = y + 10}
    }
 
   b.evaluateRules()
+
+
 
 }

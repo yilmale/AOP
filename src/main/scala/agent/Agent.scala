@@ -1,8 +1,8 @@
 package agent
 
 
-case class Rule(name: String, c: List[Condition], a: Action)
-case class Action(f: () => Unit)
+case class Rule(name: String, c: List[Condition], a: Action) {var ag: Agent = null}
+case class Action(f: () => Unit) {var ag: Agent = null}
 
 object RuleGenerator {
 
@@ -10,6 +10,10 @@ object RuleGenerator {
 
   def initialize(): List[Rule] = {
     ruleBase
+  }
+
+  def not(f: Fact): Unit = {
+
   }
 
   implicit def R(name: String) =
@@ -36,13 +40,16 @@ object RuleGenerator {
 
 }
 
+trait Agent
 
-abstract class Agent() {
+abstract class ReflexAgent extends Agent {
 
   var agentRules: List[Rule] = RuleGenerator.initialize()
   var beliefs: Set[Fact]
 
-  def evaluateRules(): Unit = {
+
+  def evaluateRules(): List[Rule] = {
+    var matchRules = List[Rule]()
     for (x <- agentRules) {
       var matched = true
       var cndIterator = x.c.iterator
@@ -51,19 +58,25 @@ abstract class Agent() {
         if (beliefs contains cnd.asInstanceOf[Fact]) matched = true
         else matched = false
       }
-      if (matched==true) println(x.name + " is satisfied")
-          else println(x.name + " is not satisfied")
+      if (matched==true) matchRules = x :: matchRules
+
       }
+    matchRules
     }
 }
 
-object Agent {
-  def apply(bels: Set[Fact])(rules : => Unit): Agent = {
-    new Agent() {
+object ReflexAgent {
+  def apply(bels: Set[Fact])(rules : => Unit): ReflexAgent = {
+    new ReflexAgent() {
         rules
         agentRules = RuleGenerator.initialize()
         RuleGenerator.ruleBase = List[Rule]()
         var beliefs = bels
+        agentRules foreach {r => {
+          r.ag=this
+          r.a.ag = this
+        }}
+        beliefs foreach {b => b.ag=this}
     }
   }
 }
