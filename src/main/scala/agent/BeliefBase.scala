@@ -2,21 +2,21 @@ package agent
 
 trait Condition
 
-class Fact extends Condition {
+class Belief extends Condition {
   var ag : Agent = null
   var value : Boolean = true
 }
 
 abstract class BeliefBase {
-  var facts: Set[Fact]
-  def add(f: Fact): Unit =  {
+  var facts: Set[Belief]
+  def add(f: Belief): Unit =  {
     facts = facts + f
   }
 
 }
 
-object Facts {
-  def apply(fs: Set[Fact]): Set[Fact] = {
+object Beliefs {
+  def apply(fs: Set[Belief]): Set[Belief] = {
     fs
   }
 }

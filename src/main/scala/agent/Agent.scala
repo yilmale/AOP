@@ -1,11 +1,18 @@
 package agent
 
 
-case class Rule(name: String, c: List[Condition], a: List[Fact]) {
+case class Rule1(name: String, c: List[Condition], a: List[Belief]) {
   var ag: Agent = null
   var specificity = c.length
 }
-case class Action(f: () => Unit) {var ag: Agent = null}
+
+case class Rule(name: String, c: List[Condition], a: Action) {
+  var ag: Agent = null
+  var specificity = c.length
+}
+
+
+case class Action(f: Function0[Unit]) {var ag: Agent = null}
 
 object RuleGenerator {
 
@@ -15,7 +22,7 @@ object RuleGenerator {
     ruleBase
   }
 
-  def not(f: Fact): Fact = {
+  def not(f: Belief): Belief = {
     f.value = false
     f
   }
@@ -27,13 +34,17 @@ object RuleGenerator {
       }
     }
 
-  class RuleDef(n: String, conditions: List[Condition], actions: List[Fact]) {
+  class RuleDef(n: String, conditions: List[Condition], actions: List[Belief]) {
     def &(c: Condition): RuleDef = {
       new RuleDef(n, c :: conditions,actions)
     }
 
-    def |-->(f: Fact*): Rule = {
-      new Rule(n,conditions,f.toList)
+    def |-->(f: Belief*): Rule1 = {
+      new Rule1(n,conditions,f.toList)
+    }
+
+    def |-->(stmt : => Unit): Rule = {
+      new Rule(n,conditions,Action(() => stmt))
     }
 
 
@@ -51,7 +62,13 @@ trait Agent
 abstract class ReflexAgent extends Agent {self=>
 
   var agentRules: List[Rule] = null
-  var beliefs: Set[Fact] = null
+  var beliefs: Set[Belief] = null
+
+  def this(bels: Set[Belief]) {
+      this
+      beliefs = bels
+      beliefs foreach {b => b.ag=this}
+  }
 
   def subjectTo(rls : Rule*) : ReflexAgent = {
       new ReflexAgent {
@@ -78,7 +95,7 @@ abstract class ReflexAgent extends Agent {self=>
       var cndIterator = x.c.iterator
       while ((cndIterator.hasNext) && (matched == true)) {
         var cnd = cndIterator.next()
-        if (beliefs contains cnd.asInstanceOf[Fact]) matched = true
+        if (beliefs contains cnd.asInstanceOf[Belief]) matched = true
         else matched = false
       }
       if (matched==true) matchRules = x :: matchRules
@@ -89,7 +106,7 @@ abstract class ReflexAgent extends Agent {self=>
 }
 
 object ReflexAgent {
-  def apply(bels: Set[Fact]): ReflexAgent = {
+  def apply(bels: Set[Belief]): ReflexAgent = {
     new ReflexAgent {
         //rules
         //agentRules = RuleGenerator.initialize()
