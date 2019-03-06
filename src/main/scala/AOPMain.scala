@@ -34,4 +34,14 @@ object AOPMain extends App  {
   rl.c foreach {cnd => println(cnd)}
 
 
+  import ReflexAgent._
+  var c = new MyAgent(x=3,null) {
+    var a = 10
+    var d = 15
+    Model(Beliefs(Set())
+    "Rule1" -- Locked("D1") & Acquired("R1") |--> {var x= a+d; a=12}
+
+  }
+
+
 }

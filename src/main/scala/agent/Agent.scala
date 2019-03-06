@@ -61,6 +61,7 @@ trait Agent
 
 abstract class ReflexAgent extends Agent {self=>
 
+
   var agentRules: List[Rule] = null
   var beliefs: Set[Belief] = null
 
@@ -69,6 +70,8 @@ abstract class ReflexAgent extends Agent {self=>
       beliefs = bels
       beliefs foreach {b => b.ag=this}
   }
+
+
 
   def subjectTo(rls : Rule*) : ReflexAgent = {
       new ReflexAgent {
@@ -114,5 +117,9 @@ object ReflexAgent {
         beliefs = bels
         beliefs foreach {b => b.ag=this}
     }
+  }
+
+  def Model(bels: Set[Belief]): Unit = {
+
   }
 }
