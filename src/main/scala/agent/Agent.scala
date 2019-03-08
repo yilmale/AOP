@@ -61,24 +61,14 @@ trait Agent
 
 abstract class ReflexAgent extends Agent {self=>
 
-
-  var agentRules: List[Rule] = null
-  var beliefs: Set[Belief] = null
+  import ReflexAgent._
+  var model : ReflexModel = null
 
   def this(bels: Set[Belief]) {
       this
-      beliefs = bels
-      beliefs foreach {b => b.ag=this}
+      model = new ReflexModel(bels)
   }
 
-
-
-  def subjectTo(rls : Rule*) : ReflexAgent = {
-      new ReflexAgent {
-        agentRules = rls.toList
-        beliefs = self.beliefs
-      }
-  }
 
 
   def selectRule(): Rule = {
@@ -93,12 +83,12 @@ abstract class ReflexAgent extends Agent {self=>
 
   private def evaluateRules(): List[Rule] = {
     var matchRules = List[Rule]()
-    for (x <- agentRules) {
+    for (x <- model.agentRules) {
       var matched = true
       var cndIterator = x.c.iterator
       while ((cndIterator.hasNext) && (matched == true)) {
         var cnd = cndIterator.next()
-        if (beliefs contains cnd.asInstanceOf[Belief]) matched = true
+        if (model.beliefs contains cnd.asInstanceOf[Belief]) matched = true
         else matched = false
       }
       if (matched==true) matchRules = x :: matchRules
@@ -109,17 +99,25 @@ abstract class ReflexAgent extends Agent {self=>
 }
 
 object ReflexAgent {
+
+  class ReflexModel(var beliefs: Set[Belief], var agentRules: List[Rule]=null) {
+    def subjectTo(rls: Rule*): ReflexModel = {
+      new ReflexModel(this.beliefs,rls.toList)
+    }
+  }
+
   def apply(bels: Set[Belief]): ReflexAgent = {
     new ReflexAgent {
         //rules
         //agentRules = RuleGenerator.initialize()
         //RuleGenerator.ruleBase = List[Rule]()
-        beliefs = bels
-        beliefs foreach {b => b.ag=this}
+        //beliefs = bels
+        //beliefs foreach {b => b.ag=this}
     }
   }
 
-  def Model(bels: Set[Belief]): Unit = {
-
+  def Model(bels:Set[Belief]): ReflexModel = {
+    new ReflexModel(bels)
   }
+
 }
