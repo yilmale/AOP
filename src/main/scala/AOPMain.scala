@@ -20,14 +20,29 @@ object AOPMain extends App  {
   {
     var a = 10
     var d = 15
-    //Model(Beliefs(Set())
-    Model(
+
+    val action1 = () => {
+      var x = a+d
+      println("Action1")
+    }
+
+    val action2 = () => {
+      println("Action2")
+    }
+
+
+    var myf = Action(action1)
+    myf.f()
+
+
+    Model {
       Beliefs(Set(
         Locked("D1"),
         Acquired("R1")))
-     ) subjectTo (
+    } subjectTo (
+            "Rule1" -- Locked("D1") & Acquired("R1") |--> {var x= a+d; a=12},
             "Rule1" -- Locked("D1") & Acquired("R1") |--> {var x= a+d; a=12}
-       )
+      )
 
   }
 

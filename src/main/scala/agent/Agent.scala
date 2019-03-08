@@ -12,7 +12,7 @@ case class Rule(name: String, c: List[Condition], a: Action) {
 }
 
 
-case class Action(f: Function0[Unit]) {var ag: Agent = null}
+case class Action(f: ()=>Unit)
 
 object RuleGenerator {
 
