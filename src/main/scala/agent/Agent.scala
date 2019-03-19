@@ -61,10 +61,24 @@ trait Agent
 
 abstract class ReflexAgent extends Agent {self=>
 
-  import ReflexAgent._
   var model : ReflexModel = null
 
-  def this(bels: Set[Belief]) {
+  class ReflexModel(var beliefs: Set[Condition], var actions: Set[()=>Unit]=null,
+                    var agentRules: List[Rule]=null) {
+    def subjectTo(rls: Rule*): ReflexModel = {
+      model = new ReflexModel(this.beliefs,this.actions, rls.toList)
+      model
+    }
+  }
+
+  object Model {
+    def apply(bels:Set[Condition], acts: Set[()=>Unit]=null): ReflexModel = {
+      model = new ReflexModel(bels,acts,null)
+      model
+    }
+  }
+
+  def this(bels: Set[Condition]) {
       this
       model = new ReflexModel(bels)
   }
@@ -98,26 +112,4 @@ abstract class ReflexAgent extends Agent {self=>
     }
 }
 
-object ReflexAgent {
 
-  class ReflexModel(var beliefs: Set[Belief], var agentRules: List[Rule]=null) {
-    def subjectTo(rls: Rule*): ReflexModel = {
-      new ReflexModel(this.beliefs,rls.toList)
-    }
-  }
-
-  def apply(bels: Set[Belief]): ReflexAgent = {
-    new ReflexAgent {
-        //rules
-        //agentRules = RuleGenerator.initialize()
-        //RuleGenerator.ruleBase = List[Rule]()
-        //beliefs = bels
-        //beliefs foreach {b => b.ag=this}
-    }
-  }
-
-  def Model(bels:Set[Belief]): ReflexModel = {
-    new ReflexModel(bels)
-  }
-
-}

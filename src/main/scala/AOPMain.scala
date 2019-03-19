@@ -3,9 +3,9 @@ import agent._
 
 object AOPMain extends App  {
 
-  case class Locked(d: String) extends Belief
-  case class Acquired(r: String) extends Belief
-  case class State(x: Int, y: Int) extends Belief
+  case class Locked(d: String) extends Condition
+  case class Acquired(r: String) extends Condition
+  case class State(x: Int, y: Int) extends Condition
 
 
   println("AOP main driver")
@@ -15,7 +15,6 @@ object AOPMain extends App  {
 
   class MyAgent extends ReflexAgent
 
-  import ReflexAgent._
   var c = new MyAgent
   {
     var a = 10
@@ -31,17 +30,15 @@ object AOPMain extends App  {
     }
 
 
-    var myf = Action(action1)
-    myf.f()
-
-
-    Model {
-      Beliefs(Set(
+    Model (
+      Conditions(Set(
         Locked("D1"),
-        Acquired("R1")))
-    } subjectTo (
-            "Rule1" -- Locked("D1") & Acquired("R1") |--> {var x= a+d; a=12},
-            "Rule1" -- Locked("D1") & Acquired("R1") |--> {var x= a+d; a=12}
+        Acquired("R1"))),
+      Actions(Set(
+        action1,action2))
+    ) subjectTo (
+            "Rule1" -- Locked("D1") & Acquired("R1") |--> {var x= a+d; action1()},
+            "Rule1" -- Locked("D1") & Acquired("R1") |--> {var x= a+d; action2()}
       )
 
   }

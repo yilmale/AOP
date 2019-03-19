@@ -20,3 +20,16 @@ object Beliefs {
     fs
   }
 }
+
+
+object Conditions {
+  def apply(fs: Set[Condition]): Set[Condition] = {
+    fs
+  }
+}
+
+object Actions {
+  def apply(fs: Set[()=>Unit]): Set[()=>Unit] = {
+    fs
+  }
+}
