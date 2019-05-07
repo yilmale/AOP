@@ -1,16 +1,18 @@
 import agent._
+import dsl._
 
 
 object AOPMain extends App  {
-
-  case class Locked(d: String) extends Condition
-  case class Acquired(r: String) extends Condition
-  case class State(x: Int, y: Int) extends Condition
 
 
   println("AOP main driver")
 
 
+
+  /*
+  case class Locked(d: String) extends Condition
+  case class Acquired(r: String) extends Condition
+  case class State(x: Int, y: Int) extends Condition
   import RuleGenerator._
 
   class MyAgent extends ReflexAgent
@@ -42,6 +44,6 @@ object AOPMain extends App  {
       )
 
   }
-
+*/
 
 }

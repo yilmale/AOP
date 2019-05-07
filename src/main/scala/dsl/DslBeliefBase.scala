@@ -1,4 +1,6 @@
-package agent
+package dsl
+
+import agent.Agent
 
 trait Condition
 
