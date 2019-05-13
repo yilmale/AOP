@@ -1,5 +1,6 @@
 package dsl
 
+/*
 import agent.Agent
 
 trait Condition
@@ -35,3 +36,5 @@ object Actions {
     fs
   }
 }
+
+*/

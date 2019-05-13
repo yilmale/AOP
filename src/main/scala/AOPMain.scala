@@ -1,5 +1,6 @@
 import agent._
-import dsl._
+import vacuumWorld._
+
 
 
 object AOPMain extends App  {
@@ -7,6 +8,7 @@ object AOPMain extends App  {
 
   println("AOP main driver")
 
+  var rba = new VacuumWorldAgent()
 
 
   /*

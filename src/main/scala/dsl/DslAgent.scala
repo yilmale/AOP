@@ -1,5 +1,5 @@
 package dsl
-
+/*
 import agent.{Agent}
 
 case class Rule1(name: String, c: List[Condition], a: List[Belief]) {
@@ -112,3 +112,6 @@ abstract class ReflexAgent extends Agent {self=>
     matchRules
   }
 }
+
+
+ */
