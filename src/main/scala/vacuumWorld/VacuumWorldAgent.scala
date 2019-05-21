@@ -6,7 +6,7 @@ trait VacuumAction
 
 case class Forward() extends VacuumAction
 
-case object NoAction extends VacuumAction
+case class NoAction() extends VacuumAction
 
 trait VacuumPercept
 
@@ -33,18 +33,19 @@ class VacuumWorldAgent extends RuleBasedAgent[VacuumAction, VacuumPercept] {
   override def ruleFilter: (Set[VacuumPercept], RuleBase) => Map[Set[VacuumPercept],VacuumAction] =
     {(vps,rb) => Map[Set[VacuumPercept],VacuumAction]()}
   override def selection: Map[Set[VacuumPercept],VacuumAction] => Tuple2[Set[VacuumPercept],VacuumAction] =
-  {rmap => (Set[VacuumPercept](),NoAction)}
+  {rmap => (Set[VacuumPercept](),NoAction())}
   override def perceive: Environment[VacuumAction, VacuumPercept] => VacuumPercept = {e => DefaultPercept}
 
   var ruleBase: Map[Set[VacuumPercept],VacuumAction] = Map(
-    Set(Dirt(0,0),In(0,0)) -> NoAction,
-    Set(Dirt(0,0)) -> NoAction
+    Set() -> NoAction()
   )
 
-  var observation: List[VacuumPercept] = null
+  type Observation = List[VacuumPercept]
+
+  var observation = List[VacuumPercept]()
   override val sensor = VacuumSensor
   override val actuator = VacuumActuator
-  override val defaultAction = NoAction
+  override val defaultAction = NoAction()
 
 }
 

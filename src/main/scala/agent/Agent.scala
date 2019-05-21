@@ -79,6 +79,7 @@ trait ModelBasedReflexAgent[Action, Percept, State] extends Agent[Action, Percep
 
 
 trait RuleBasedAgent[Action,Percept] extends Agent[Action,Percept] with PartialOrdering[Set[Percept]] {
+  type Observation <: Seq[Percept]
   type Rule = Tuple2[Set[Percept],Action]
   type RuleBase = Map[Set[Percept],Action]
   type Evaluator = Environment[Action,Percept] => Set[Percept]
@@ -87,7 +88,7 @@ trait RuleBasedAgent[Action,Percept] extends Agent[Action,Percept] with PartialO
 
 
   var ruleBase: RuleBase
-  var observation: Seq[Percept]
+  var observation : Observation
 
   override def lteq(x: Set[Percept], y: Set[Percept]) : Boolean = {
     if (x.size <= y.size) true
